@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ispis izvjestaja</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="container">
+        <div class="row mt-5">
+          <div class="forma col-3 border bg-light">
+            <form action="/izvjestaj" method="POST">
+              <h1 class="mb-3">Unesi podatke</h1>
+              <label for="datumOd" class="mt-3">Početni datum obračuna</label>
+              <input type="date" name="datumOd">
+              <label for="datumDo" class="mt-3">Krajnji datum obračuna</label>
+              <input type="date" name="datumDo">
+              <% if(message !== "") {%>
+                <p class="text-danger">Popunite sva polja.</p>
+              <% } %>
+              <button type="submit" class="btn btn-primary mt-3">GENERISI IZVJESTAJ</button>
+              <div class="input-group mt-5">
+                <input id="myInput" type="text" class="form-control" placeholder="Pretraži..." aria-label="Pretraži..." aria-describedby="basic-addon2" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-primary" type="button" style="border-bottom-left-radius: 0; border-top-left-radius: 0;"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+
+            </form>
+            <button class="preuzimanje btn btn-primary">PREUZMI IZVJESTAJ</button>
+          </div>
+          <div class="col-9 border">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Naziv stalnog sredstva</th>
+                    <th scope="col">Iznos amortizacije</th>
+                    <th scope="col">Greška</th>
+                  </tr>
+                </thead>
+              <tbody id="myTable">
+              <% for(let i = 0; i < rez.length; i++) { %>
+                <tr>
+                  <th scope="row"><%= i+1 %></th>
+                  <th><%= rez[i].naziv_stalnog_sredstva %></th>
+                  <th><%= rez[i].iznos_obracuna %></th>
+                  <th><%= rez[i].greska %></th>
+                </tr><% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#myTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+
+        $('.preuzimanje').click(()=>{
+          let sadrzaj = ''
+          <% for(let i = 0; i < rez.length; i++) { %>
+          sadrzaj += 'Amortizacija za sredstvo: ';
+          sadrzaj += '<%= rez[i].naziv_stalnog_sredstva %>';
+          sadrzaj += ' iznosi: ';
+          sadrzaj += '<%= rez[i].iznos_obracuna %>';
+          sadrzaj += ' sa greškom: ';
+          sadrzaj += '<%= rez[i].greska %>';
+          sadrzaj += '\n\n';
+          <% } %>
+          const blob = new Blob([sadrzaj], { type: 'text/plain' });
+          const blobURL = URL.createObjectURL(blob);
+          const downloadLink = document.createElement('a');
+          downloadLink.href = blobURL;
+          downloadLink.download = 'sadrzaj.txt';
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+
+          document.body.removeChild(downloadLink);
+          URL.revokeObjectURL(blobURL);
+        });
+      });
+    </script>
+  </body>
+</html>

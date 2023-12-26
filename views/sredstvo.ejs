@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Unos sredstva</title>
+    <link rel="icon" type="image/x-icon" href="../public/images/favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <div class="container d-flex flex-column justify-content-center vh-100">
+        <div id="unos_sredstva" class="bg-light">
+            <h4 class="text-primary">Unos stalnog sredstva</h4>
+            <p class="text-secondary mb-4">Ispunite sljedeću formu</p>
+            <form id="unos_sredstva_form" action="/sredstvo" method="POST">
+                <label for="naziv">Naziv stalnog sredstva: <span class="text-danger">*</span></label>
+                <input id="naziv" type="text" name="naziv" class="form-control">
+                <label for="nomenklatura" class="mt-4">Nomenklatura sredstva: <span class="text-danger">*</span></label>
+                <select name="nomenklatura" class="form-control">
+                    <option value="667b5439-74d6-11ee-850c-0050564a1d10">Telekomunikaciona oprema</option>
+                    <option value="b02d9b03-74d7-11ee-850c-0050564a1d10">Kancelarijski materijal</option>
+                    <option value="c20ff713-74d5-11ee-850c-0050564a1d10">Računarska oprema i programi</option>
+                    <option value="d15a46b0-74d5-11ee-850c-0050564a1d10">Vozila</option>
+                </select>
+                <label for="datum_nabavke" class="mt-4">Datum nabavke</label>
+                <input type="date" name="datum_nabavke" class="form-control">
+                <label for="dobavljac" class="mt-4">Dobavljač: <span class="text-danger">*</span></label>
+                <select name="dobavljac" id="" class="form-control">
+                    <option value="08ae5e36-7807-11ee-850c-0050564a1d10">Kalea Namjestaj d.o.o</option>
+                    <option value="41e1c030-7807-11ee-850c-0050564a1d10">Tehnika d.o.o</option>
+                    <option value="446ba8be-77fc-11ee-850c-0050564a1d10">Građevinska firma Graditelj d.o.o.</option>
+                    <option value="446baa7d-77fc-11ee-850c-0050564a1d10">Knjižara Sveznalica d.o.o.</option>
+                    <option value="f780acf7-77fb-11ee-850c-0050564a1d10">Trgovina d.o.o.</option>
+                </select>
+                <div id="chek">
+                    <label for="rashodovano" class="me-3 mt-4">Rashodovano: </label>
+                    <input type="checkbox" name="rashodovano" value="da">
+                </div>
+
+                <label for="mjesto_sredstva" class="mt-4">Mjesto sredstva</label>
+                <input type="text" name="mjesto_sredstva" class="form-control">
+                <label for="org_jed" class="mt-4">Organizaciona jedinica: <span class="text-danger">*</span></label>
+                <select name="org_jed" id="" class="form-control">
+                    <option value="00256ddf-74d7-11ee-850c-0050564a1d10">Proizvodnja</option>
+                    <option value="061476db-74d7-11ee-850c-0050564a1d10">Skladiste</option>
+                    <option value="09e1f975-74d7-11ee-850c-0050564a1d10">Prodaja</option>
+                    <option value="268047e1-74d7-11ee-850c-0050564a1d10">Ljudski resursi</option>
+                    <option value="f4d89c9f-74d6-11ee-850c-0050564a1d10">Direkcija</option>
+                    <option value="f9bd2dae-74d6-11ee-850c-0050564a1d10">Marketing</option>
+                </select>
+                <% if(error) { %>
+                <p class="text-danger mt-2"><%= message %></p>
+                <% } else {%>
+                <p class="text-success mt-2"><%= message %></p>
+                <% } %>
+            <button type="submit" class="btn btn-primary mt-3 me-5" style="width: 100%;">UNESI SREDSTVO</button>
+            </form>
+            <button id="obrisi" class="delete btn btn-danger mt-3">BRIŠI SREDSTVO</button>
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(()=>{
+
+            $('#obrisi').click(async ()=>{
+                const naziv_vr = $('#naziv').val();
+                await fetch(`/sredstvo?naziv=${naziv_vr}`, {
+                    method: 'DELETE',
+                });
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+.forma form{
+  padding: 5vh 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+table{
+  text-align: center;
+}
+#unos_sredstva{
+  display: flex;
+  flex-direction: column;
+  padding: 5%;
+  border-radius: 12px;
+  box-shadow: 10px 10px 25px;
+}
+.form-control{
+  border: 1px solid darkgray;
+}
+.preuzimanje{
+  margin-left: 10%;
+  width: 80%
+}
+#menu{
+  padding: 10vh 6%;
+  border-radius: 12px;
+  box-shadow: 10px 10px 20px;
+}
+#menu #drugi{
+  margin-top: 16vh;
+}
